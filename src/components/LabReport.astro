@@ -1,0 +1,147 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  published: CollectionEntry<'posts'>[];
+  forthcoming: CollectionEntry<'posts'>[];
+}
+const { published, forthcoming } = Astro.props;
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+// In dev, drafts link through so they can be reviewed; in production they are listed without links.
+const linkDrafts = import.meta.env.DEV;
+---
+
+<section id="writing" class="section page" aria-labelledby="writing-title">
+  <SectionHead id="writing" kicker="Section V — Writing" meta="Writeups, explainers & build notes" title="The Lab Report" />
+
+  {
+    published.length > 0 && (
+      <ol class="posts">
+        {published.slice(0, 3).map((p) => (
+          <li class="post" data-reveal>
+            <p class="label kicker">{p.data.kicker}</p>
+            <h3>
+              <a href={`/writing/${p.id}`}>{p.data.title}</a>
+            </h3>
+            <p class="summary">{p.data.summary}</p>
+            <p class="label muted">
+              <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+            </p>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+
+  {
+    forthcoming.length > 0 && (
+      <div class="forthcoming" data-reveal>
+        <p class="label kicker">Forthcoming</p>
+        <ul>
+          {forthcoming.map((p) => (
+            <li>
+              <span class="label muted">{p.data.kicker}</span>
+              {linkDrafts ? <a href={`/writing/${p.id}`}>{p.data.title}</a> : <span class="t">{p.data.title}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  {
+    published.length > 3 && (
+      <p class="more">
+        <a class="btn btn-ghost" href="/writing">
+          All writing <Icon name="arrow-right" />
+        </a>
+      </p>
+    )
+  }
+</section>
+
+<style>
+  .posts {
+    display: grid;
+    margin: 0 0 var(--s-6);
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--rule);
+  }
+
+  .post {
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  h3 {
+    margin: var(--s-2) 0 var(--s-3);
+    font-size: 1.75rem;
+  }
+
+  h3 a {
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    text-decoration: underline;
+  }
+
+  .summary {
+    font-size: 1.0625rem;
+  }
+
+  .forthcoming {
+    padding: var(--s-5);
+    border: 1px solid var(--rule);
+    background: var(--paper-inset);
+  }
+
+  .forthcoming ul {
+    margin: var(--s-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .forthcoming li {
+    display: grid;
+    gap: 2px;
+    padding: var(--s-3) 0;
+    border-top: 1px dotted var(--ink-muted);
+  }
+
+  .forthcoming .t,
+  .forthcoming a {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    line-height: 1.25;
+  }
+
+  .forthcoming a {
+    color: var(--oxblood);
+  }
+
+  .more {
+    margin-top: var(--s-5);
+  }
+
+  @media (min-width: 1024px) {
+    .posts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .post {
+      padding: var(--s-5);
+    }
+
+    .post:first-child {
+      padding-left: 0;
+    }
+
+    .post + .post {
+      border-left: 1px solid var(--rule);
+    }
+  }
+</style>

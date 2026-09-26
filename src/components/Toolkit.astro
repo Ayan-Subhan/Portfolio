@@ -1,0 +1,94 @@
+---
+import SectionHead from './SectionHead.astro';
+import { toolkit } from '../data/record';
+---
+
+<section id="toolkit" class="section page" aria-labelledby="toolkit-title">
+  <SectionHead id="toolkit" kicker="Section II — Standing orders" meta="Tools of the trade" title="The Toolkit" />
+  <div class="grid">
+    {
+      toolkit.map((cat) => (
+        <section class="col" aria-label={cat.heading} data-reveal>
+          <h3>{cat.heading}</h3>
+          <p class="note">{cat.note}</p>
+          <ul>
+            {cat.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    border-top: 1px solid var(--rule);
+  }
+
+  .col {
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  h3 {
+    font-size: 1.75rem;
+    margin-bottom: var(--s-2);
+  }
+
+  .note {
+    font-style: italic;
+    color: var(--ink-muted);
+    font-size: 1rem;
+    margin-bottom: var(--s-3);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    gap: var(--s-2);
+    padding: var(--s-1) 0;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+  }
+
+  li::before {
+    content: '§';
+    flex: none;
+    color: var(--oxblood);
+    font-size: 0.9em;
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--s-6);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 0;
+    }
+
+    .col {
+      padding: var(--s-5) var(--s-5);
+    }
+
+    .col:not(:nth-child(3n + 1)) {
+      border-left: 1px solid var(--rule);
+    }
+
+    .col:nth-child(3n + 1) {
+      padding-left: 0;
+    }
+  }
+</style>

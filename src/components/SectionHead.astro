@@ -1,0 +1,61 @@
+---
+interface Props {
+  id: string;
+  kicker: string;
+  meta?: string;
+  title: string;
+  onDark?: boolean;
+}
+const { id, kicker, meta, title, onDark = false } = Astro.props;
+---
+
+<header class:list={['head', { 'on-dark': onDark }]}>
+  <div class="row label">
+    <span class="k">{kicker}</span>
+    {meta && <span class="m">{meta}</span>}
+  </div>
+  <hr class="rule" />
+  <h2 id={`${id}-title`}>{title}</h2>
+  <hr class="rule-double" />
+  <slot />
+</header>
+
+<style>
+  .head {
+    margin-bottom: var(--s-6);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding-bottom: var(--s-2);
+  }
+
+  .k {
+    color: var(--oxblood);
+  }
+
+  .m {
+    color: var(--ink-muted);
+  }
+
+  h2 {
+    margin: var(--s-4) 0 var(--s-4);
+    font-size: var(--fs-h2);
+  }
+
+  .on-dark .k,
+  .on-dark h2 {
+    color: var(--on-oxblood);
+  }
+
+  .on-dark .m {
+    color: var(--on-oxblood-muted);
+  }
+
+  .on-dark hr {
+    border-color: var(--on-oxblood-muted);
+  }
+</style>

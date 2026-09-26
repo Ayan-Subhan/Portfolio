@@ -1,0 +1,103 @@
+---
+import { nav, site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="page">
+    <hr class="rule-heavy" />
+    <div class="grid">
+      <div>
+        <p class="name">{site.name}</p>
+        <p class="muted small">{site.description}</p>
+      </div>
+      <div>
+        <h2 class="label kicker">Sections</h2>
+        <ul class="list">
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          <li><a href="/writing">All writing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="label kicker">The desk</h2>
+        <ul class="list">
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          {site.linkedin && <li><a href={site.linkedin} rel="noopener noreferrer">LinkedIn</a></li>}
+          {site.github && <li><a href={site.github} rel="noopener noreferrer">GitHub</a></li>}
+          <li><a href={site.cv} download>Download CV (PDF)</a></li>
+          <li><a href="/.well-known/security.txt">security.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="rule" />
+    <div class="colophon label muted">
+      <p>© {year} {site.name}</p>
+      <p>
+        Security colophon: served over HTTPS · strict content-security-policy · no cookies · no trackers ·
+        self-hosted fonts
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: var(--s-8) 0 var(--s-6);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-6);
+    padding: var(--s-6) 0;
+  }
+
+  .name {
+    margin: 0 0 var(--s-2);
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--oxblood);
+  }
+
+  .small {
+    font-size: var(--fs-small);
+    max-width: 42ch;
+  }
+
+  h2 {
+    margin-bottom: var(--s-3);
+    font-family: var(--font-mono);
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-small);
+  }
+
+  .list li {
+    padding: var(--s-1) 0;
+  }
+
+  .list a {
+    overflow-wrap: anywhere;
+  }
+
+  .colophon {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-5);
+    padding-top: var(--s-4);
+  }
+
+  .colophon p {
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+</style>

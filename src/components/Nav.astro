@@ -1,0 +1,99 @@
+---
+import { nav, site } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<nav class="site-nav" aria-label="Sections">
+  <div class="page bar">
+    <a class="home" href="/">{site.shortName}</a>
+    <ul class="links">
+      {
+        nav.map((item) => (
+          <li>
+            <a href={item.href} data-nav>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a class="btn btn-primary cv" href={site.cv} download>
+      <Icon name="download" />
+      <span>CV</span>
+    </a>
+  </div>
+</nav>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    min-height: 3.5rem;
+    padding-block: var(--s-2);
+  }
+
+  .home {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--oxblood);
+    text-decoration: none;
+    margin-right: auto;
+  }
+
+  .links {
+    order: 3;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0 var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 var(--s-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .links a:hover,
+  .links a[aria-current='true'] {
+    color: var(--oxblood);
+    border-bottom-color: var(--oxblood);
+  }
+
+  .cv {
+    min-height: 40px;
+    padding-inline: var(--s-4);
+  }
+
+  @media (min-width: 900px) {
+    .links {
+      order: 0;
+      width: auto;
+      gap: var(--s-2);
+    }
+    .links a {
+      min-height: 44px;
+    }
+  }
+</style>

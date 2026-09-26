@@ -1,0 +1,92 @@
+---
+import SectionHead from './SectionHead.astro';
+import { ledger } from '../data/record';
+---
+
+<section id="ledger" class="section page" aria-labelledby="ledger-title">
+  <SectionHead id="ledger" kicker="Section IV — Experience" meta="Entries in chronological order, newest first" title="The Career Ledger" />
+  <ol class="entries">
+    {
+      ledger.map((e) => (
+        <li class="entry" data-reveal>
+          <p class="dates label">{e.dates}</p>
+          <div class="who">
+            <h3>{e.role}</h3>
+            <p class="org label kicker">{e.org}</p>
+          </div>
+          <div class="what">
+            <p class="summary">{e.summary}</p>
+            {e.impact.length > 0 && (
+              <ul>
+                {e.impact.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .entries {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--rule);
+  }
+
+  .entry {
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-6) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .dates {
+    margin: 0;
+    color: var(--ink-muted);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+    color: var(--ink);
+  }
+
+  .org {
+    margin: var(--s-2) 0 0;
+  }
+
+  .summary {
+    font-style: italic;
+    font-size: 1.1875rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1em;
+  }
+
+  li {
+    margin-bottom: var(--s-2);
+    line-height: 1.55;
+  }
+
+  li::marker {
+    color: var(--oxblood);
+  }
+
+  @media (min-width: 1024px) {
+    .entry {
+      grid-template-columns: 11rem minmax(0, 1fr) minmax(0, 2fr);
+      gap: var(--s-6);
+    }
+
+    .dates {
+      padding-top: 0.6rem;
+    }
+  }
+</style>

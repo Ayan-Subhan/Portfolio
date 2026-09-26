@@ -1,0 +1,293 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Figure from '../../components/Figure.astro';
+import Diagram from '../../components/Diagram.astro';
+import Icon from '../../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, prev: projects[i - 1], next: projects[i + 1] },
+  }));
+}
+
+const { project, prev, next } = Astro.props;
+const p = project.data;
+const { Content } = await render(project);
+---
+
+<Base title={p.title} description={p.problem} compact>
+  <article class="page case">
+    <nav class="crumbs label" aria-label="Breadcrumb">
+      <a href="/">Front page</a> <span aria-hidden="true">/</span> <a href="/#work">Case files</a>
+      <span aria-hidden="true">/</span> <span aria-current="page">Exhibit {p.exhibit}</span>
+    </nav>
+
+    <header class="head">
+      <div class="tag-row">
+        <span class="stamp">Exhibit {p.exhibit}</span>
+        <span class="label muted">{p.org}{p.year && ` · ${p.year}`}</span>
+        {p.status && <span class="label kicker">Status: {p.status}</span>}
+      </div>
+      <h1>{p.title}</h1>
+      <p class="deck">{p.problem}</p>
+      <hr class="rule-double" />
+      <dl class="meta">
+        <div><dt class="label">My role</dt><dd>{p.role}</dd></div>
+        <div>
+          <dt class="label">Evidence (stack)</dt>
+          <dd>
+            <ul class="chips">{p.stack.map((s) => <li class="chip">{s}</li>)}</ul>
+          </dd>
+        </div>
+      </dl>
+    </header>
+
+    {p.cover && (
+      <div class="lead-fig">
+        <Figure src={p.cover} alt={p.coverAlt ?? ''} caption={p.coverCaption} label={`Fig. ${p.exhibit}1 —`} redacted={p.redacted} eager sizes="(min-width: 1200px) 1200px, 100vw" />
+      </div>
+    )}
+
+    <div class="columns">
+      <aside class="findings" aria-labelledby="findings-title">
+        <h2 id="findings-title" class="label kicker">Findings</h2>
+        <ol>{p.findings.map((f) => <li>{f}</li>)}</ol>
+        {
+          p.repo && (
+            <a class="btn btn-ghost" href={p.repo} rel="noopener noreferrer">
+              <Icon name="github" /> Source on GitHub
+            </a>
+          )
+        }
+      </aside>
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+
+    <section class="arch" aria-labelledby="arch-title">
+      <h2 id="arch-title">Architecture</h2>
+      <Diagram kind={p.diagram} label={`Fig. ${p.exhibit}${p.cover ? 2 : 1} —`} />
+    </section>
+
+    {
+      p.gallery.length > 0 && (
+        <section class="gallery" aria-labelledby="evidence-title">
+          <h2 id="evidence-title">Evidence locker</h2>
+          <div class="grid">
+            {p.gallery.map((g, i) => (
+              <Figure src={g.src} alt={g.alt} caption={g.caption} label={`Fig. ${p.exhibit}${i + 3} —`} redacted={p.redacted} sizes="(min-width: 1024px) 600px, 100vw" />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <nav class="pager" aria-label="More case files">
+      {
+        prev ? (
+          <a href={`/work/${prev.id}`} class="prev">
+            <span class="label muted"><Icon name="arrow-left" /> Exhibit {prev.data.exhibit}</span>
+            <span class="t">{prev.data.short}</span>
+          </a>
+        ) : <span />
+      }
+      {
+        next && (
+          <a href={`/work/${next.id}`} class="next">
+            <span class="label muted">Exhibit {next.data.exhibit} <Icon name="arrow-right" /></span>
+            <span class="t">{next.data.short}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .case {
+    padding-top: var(--s-5);
+    padding-bottom: var(--s-8);
+  }
+
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    color: var(--ink-muted);
+  }
+
+  .crumbs a {
+    color: var(--oxblood);
+  }
+
+  .head {
+    max-width: 60rem;
+    padding: var(--s-6) 0 var(--s-5);
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-4);
+  }
+
+  h1 {
+    margin: var(--s-5) 0 var(--s-4);
+    font-size: var(--fs-h1);
+  }
+
+  .deck {
+    max-width: 52ch;
+    font-size: var(--fs-lede);
+    font-style: italic;
+    line-height: 1.45;
+    padding-left: var(--s-4);
+    border-left: 3px solid var(--oxblood);
+    margin-bottom: var(--s-5);
+  }
+
+  .meta {
+    display: grid;
+    gap: var(--s-4);
+    margin: var(--s-4) 0 0;
+  }
+
+  .meta dt {
+    color: var(--oxblood);
+    margin-bottom: var(--s-1);
+  }
+
+  .meta dd {
+    margin: 0;
+  }
+
+  .lead-fig {
+    margin: var(--s-5) 0 var(--s-7);
+  }
+
+  .columns {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .findings {
+    align-self: start;
+    padding: var(--s-5);
+    background: var(--paper-inset);
+    border-top: 4px solid var(--oxblood);
+  }
+
+  .findings ol {
+    margin: var(--s-3) 0 var(--s-5);
+    padding-left: 1.2em;
+  }
+
+  .findings li {
+    margin-bottom: var(--s-3);
+    font-size: 1.0625rem;
+    line-height: 1.45;
+  }
+
+  .findings li::marker {
+    color: var(--oxblood);
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+  }
+
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .arch,
+  .gallery {
+    margin-top: var(--s-8);
+  }
+
+  .arch h2,
+  .gallery h2 {
+    margin-bottom: var(--s-5);
+    padding-bottom: var(--s-3);
+    font-size: var(--fs-h3);
+    border-bottom: 3px double var(--rule);
+  }
+
+  .gallery .grid {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-4);
+    margin-top: var(--s-8);
+    padding-top: var(--s-4);
+    border-top: 4px solid var(--rule);
+  }
+
+  .pager a {
+    display: grid;
+    gap: var(--s-1);
+    text-decoration: none;
+  }
+
+  .pager .next {
+    text-align: right;
+    grid-column: 2;
+  }
+
+  .pager .label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+  }
+
+  .pager .next .label {
+    justify-content: flex-end;
+  }
+
+  .pager :global(svg) {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .pager .t {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    line-height: 1.2;
+    color: var(--oxblood);
+  }
+
+  .pager a:hover .t {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  @media (min-width: 768px) {
+    .meta {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-6);
+    }
+
+    .gallery .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .columns {
+      grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+      gap: var(--s-8);
+    }
+
+    .findings {
+      position: sticky;
+      top: 5rem;
+    }
+  }
+</style>

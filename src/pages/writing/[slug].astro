@@ -1,0 +1,84 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  // Drafts are only built in dev so they can be reviewed; production skips them entirely.
+  const posts = (await getCollection('posts')).filter((p) => import.meta.env.DEV || !p.data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base title={post.data.title} description={post.data.summary} compact>
+  <article class="page post">
+    <nav class="crumbs label" aria-label="Breadcrumb">
+      <a href="/">Front page</a> <span aria-hidden="true">/</span> <a href="/writing">The Lab Report</a>
+    </nav>
+    <header>
+      <p class="label kicker">{post.data.kicker}{post.data.draft && ' · Draft — not published'}</p>
+      <h1>{post.data.title}</h1>
+      <p class="deck">{post.data.summary}</p>
+      <p class="byline label muted">
+        By Muhammad Ayan · <time datetime={post.data.date.toISOString()}>{date}</time>
+      </p>
+      <hr class="rule-double" />
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post {
+    padding-top: var(--s-5);
+    padding-bottom: var(--s-8);
+  }
+
+  .crumbs {
+    display: flex;
+    gap: var(--s-2);
+    color: var(--ink-muted);
+  }
+
+  .crumbs a {
+    color: var(--oxblood);
+  }
+
+  header {
+    max-width: 50rem;
+    padding: var(--s-6) 0 var(--s-6);
+  }
+
+  h1 {
+    margin: var(--s-3) 0 var(--s-4);
+    font-size: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  }
+
+  .deck {
+    font-size: var(--fs-lede);
+    font-style: italic;
+    line-height: 1.45;
+  }
+
+  .byline {
+    margin-bottom: var(--s-4);
+  }
+
+  .prose {
+    font-size: 1.1875rem;
+  }
+
+  .prose > :global(p:first-of-type::first-letter) {
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    font-family: var(--font-display);
+    font-size: 4em;
+    line-height: 0.8;
+    color: var(--oxblood);
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import { site } from '../data/site';
+import { cves } from '../data/record';
+import Icon from './Icon.astro';
+---
+
+<section id="disclosure" class="page disclosure-wrap" aria-labelledby="disclosure-title">
+  <div class="box" data-reveal>
+    <div class="icon"><Icon name="shield" /></div>
+    <div>
+      <p class="label kicker">Notice to readers</p>
+      <h2 id="disclosure-title">Responsible disclosure</h2>
+      <p>
+        Found a vulnerability in something I've built, including this site? Email{' '}
+        <a href={`mailto:${site.email}?subject=Security%20report`}>{site.email}</a> with the details and steps to reproduce. I'll
+        acknowledge within 72 hours, keep you updated while I fix it, and credit you if you'd like. Please don't access other people's
+        data or degrade the service while testing.
+      </p>
+      <p class="label muted">
+        Machine-readable policy: <a href="/.well-known/security.txt">/.well-known/security.txt</a>
+      </p>
+
+      {
+        cves.length > 0 && (
+          <div class="cves">
+            <h3 class="label kicker">Advisories &amp; CVEs</h3>
+            <ul>
+              {cves.map((c) => (
+                <li>
+                  <a href={c.url} rel="noopener noreferrer">
+                    {c.id}
+                  </a>{' '}
+                  — {c.title} ({c.vendor})
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .disclosure-wrap {
+    padding-bottom: var(--s-8);
+  }
+
+  .box {
+    display: grid;
+    gap: var(--s-4);
+    max-width: 56rem;
+    padding: var(--s-5);
+    border: 3px double var(--oxblood);
+  }
+
+  .icon {
+    color: var(--oxblood);
+  }
+
+  .icon :global(svg) {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  h2 {
+    margin: var(--s-2) 0 var(--s-3);
+    font-size: 2rem;
+  }
+
+  p a {
+    color: var(--oxblood);
+    overflow-wrap: anywhere;
+  }
+
+  .cves {
+    margin-top: var(--s-4);
+  }
+
+  @media (min-width: 768px) {
+    .box {
+      grid-template-columns: auto 1fr;
+      gap: var(--s-5);
+      padding: var(--s-6);
+    }
+  }
+</style>

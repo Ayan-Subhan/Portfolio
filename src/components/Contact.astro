@@ -1,0 +1,129 @@
+---
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<section id="contact" class="band" aria-labelledby="contact-title">
+  <div class="section page">
+    <SectionHead id="contact" kicker="Section VI — Letters & correspondence" meta="The desk is open" title="Put it in writing." onDark />
+    <div class="grid">
+      <p class="lede">
+        Hiring for a SOC, GRC or security-engineering role? Or have a problem that needs a dashboard, an assessment or a second look at
+        a threat model? Write to me. I read everything.
+      </p>
+      <ul class="channels">
+        <li>
+          <a href={`mailto:${site.email}`}>
+            <Icon name="mail" />
+            <span><span class="label">Email</span><span class="v">{site.email}</span></span>
+          </a>
+        </li>
+        {
+          site.linkedin && (
+            <li>
+              <a href={site.linkedin} rel="noopener noreferrer">
+                <Icon name="linkedin" />
+                <span><span class="label">LinkedIn</span><span class="v">{handle(site.linkedin)}</span></span>
+              </a>
+            </li>
+          )
+        }
+        {
+          site.github && (
+            <li>
+              <a href={site.github} rel="noopener noreferrer">
+                <Icon name="github" />
+                <span><span class="label">GitHub — pinned repos match the exhibits</span><span class="v">{handle(site.github)}</span></span>
+              </a>
+            </li>
+          )
+        }
+        <li>
+          <a href={site.cv} download>
+            <Icon name="file" />
+            <span><span class="label">Curriculum vitae</span><span class="v">Download CV (PDF)</span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band {
+    background: var(--oxblood);
+    color: var(--on-oxblood);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .lede {
+    max-width: 40ch;
+    font-size: var(--fs-lede);
+    font-style: italic;
+    line-height: 1.45;
+  }
+
+  .channels {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--on-oxblood-muted);
+  }
+
+  .channels a {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 44px;
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--on-oxblood-muted);
+    color: var(--on-oxblood);
+    text-decoration: none;
+  }
+
+  .channels a > :global(svg) {
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .channels a > span {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .channels .label {
+    color: var(--on-oxblood-muted);
+  }
+
+  .v {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .channels a:hover .v {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  .band :focus-visible {
+    outline-color: var(--on-oxblood);
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: var(--s-8);
+    }
+  }
+</style>

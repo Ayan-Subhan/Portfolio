@@ -1,0 +1,179 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Figure from './Figure.astro';
+import Diagram from './Diagram.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  flip?: boolean;
+}
+const { project, flip = false } = Astro.props;
+const p = project.data;
+const href = `/work/${project.id}`;
+---
+
+<article class:list={['exhibit', { flip }]} aria-labelledby={`ex-${project.id}`} data-reveal>
+  <div class="media">
+    {
+      p.cover ? (
+        <Figure src={p.cover} alt={p.coverAlt ?? ''} caption={p.coverCaption} label={`Fig. ${p.exhibit}1 —`} redacted={p.redacted} />
+      ) : (
+        <Diagram kind={p.diagram} label={`Fig. ${p.exhibit}1 —`} />
+      )
+    }
+  </div>
+
+  <div class="copy">
+    <div class="tag-row">
+      <span class="stamp">Exhibit {p.exhibit}</span>
+      <span class="label muted">{p.org}{p.year && ` · ${p.year}`}</span>
+    </div>
+    <h3 id={`ex-${project.id}`}><a href={href}>{p.title}</a></h3>
+    {p.status && <p class="label kicker status">Status: {p.status}</p>}
+
+    <dl class="facts">
+      <div>
+        <dt class="label">The problem</dt>
+        <dd>{p.problem}</dd>
+      </div>
+      <div>
+        <dt class="label">My role</dt>
+        <dd>{p.role}</dd>
+      </div>
+      <div>
+        <dt class="label">Findings</dt>
+        <dd>
+          <ol class="findings">
+            {p.findings.map((f) => <li>{f}</li>)}
+          </ol>
+        </dd>
+      </div>
+      <div>
+        <dt class="label">Evidence (stack)</dt>
+        <dd>
+          <ul class="chips">
+            {p.stack.map((s) => <li class="chip">{s}</li>)}
+          </ul>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="actions">
+      <a class="btn btn-ghost" href={href}>
+        Open case file <Icon name="arrow-right" />
+      </a>
+      {
+        p.repo && (
+          <a class="btn btn-ghost" href={p.repo} rel="noopener noreferrer">
+            <Icon name="github" /> Source
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .exhibit {
+    display: grid;
+    gap: var(--s-6);
+    padding-block: var(--s-7);
+    border-top: 1px solid var(--rule);
+  }
+
+  .exhibit:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-4);
+    margin-bottom: var(--s-4);
+  }
+
+  h3 {
+    font-size: clamp(1.875rem, 1.4rem + 1.8vw, 2.75rem);
+    margin-bottom: var(--s-3);
+  }
+
+  h3 a {
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  .status {
+    margin: 0 0 var(--s-3);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--s-4);
+    margin: var(--s-4) 0 var(--s-5);
+  }
+
+  dt {
+    margin-bottom: var(--s-1);
+    color: var(--oxblood);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  .findings {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: f;
+  }
+
+  .findings li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: var(--s-2);
+    counter-increment: f;
+  }
+
+  .findings li::before {
+    content: counter(f, upper-roman) '.';
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    color: var(--oxblood);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  @media (min-width: 1024px) {
+    .exhibit {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--s-7);
+      align-items: start;
+    }
+
+    .flip .media {
+      order: 2;
+    }
+
+    .media {
+      position: sticky;
+      top: 5rem;
+    }
+  }
+</style>

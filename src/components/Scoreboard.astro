@@ -1,0 +1,153 @@
+---
+import SectionHead from './SectionHead.astro';
+import { ctfs, strongCategories, trainingRooms } from '../data/record';
+
+// Columns with no data yet are hidden rather than filled with dashes.
+const hasCategories = ctfs.some((c) => c.categories.length > 0);
+const hasWriteups = ctfs.some((c) => c.writeup);
+---
+
+<section id="scoreboard" class="band" aria-labelledby="scoreboard-title">
+  <div class="section page">
+    <SectionHead id="scoreboard" kicker="Section III — Competitions" meta="Capture the flag" title="The Scoreboard" onDark />
+
+    <div class="grid">
+      <div class="table-wrap" data-reveal>
+        <table>
+          <caption class="visually-hidden">CTF competitions entered</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="label">Event</th>
+              <th scope="col" class="label">Year</th>
+              <th scope="col" class="label">Result</th>
+              {hasCategories && <th scope="col" class="label">Categories</th>}
+              {hasWriteups && <th scope="col" class="label">Writeup</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              ctfs.map((c) => (
+                <tr>
+                  <th scope="row">{c.event}</th>
+                  <td class="mono">{c.year || '—'}</td>
+                  <td>{c.placement || 'Competed'}</td>
+                  {hasCategories && <td>{c.categories.length ? c.categories.join(', ') : '—'}</td>}
+                  {hasWriteups && <td>{c.writeup ? <a href={c.writeup}>Read</a> : '—'}</td>}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="side" data-reveal>
+        {
+          strongCategories.length > 0 && (
+            <div class="block">
+              <h3 class="label">Strongest categories</h3>
+              <ul class="chips">
+                {strongCategories.map((c) => (
+                  <li class="chip">{c}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        <div class="block">
+          <h3 class="label">Training record — TryHackMe</h3>
+          <ul class="chips">
+            {trainingRooms.map((r) => <li class="chip">{r}</li>)}
+          </ul>
+        </div>
+        <p class="aside-note">CTF writeups are filed in <a href="#writing">The Lab Report</a>.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band {
+    background: var(--oxblood-deep);
+    color: var(--on-oxblood);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-7);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    min-width: 20rem;
+    border-collapse: collapse;
+    font-size: 1.0625rem;
+  }
+
+  thead th {
+    padding: 0 var(--s-3) var(--s-2) 0;
+    text-align: left;
+    color: var(--on-oxblood-muted);
+    border-bottom: 1px solid var(--on-oxblood-muted);
+  }
+
+  tbody th,
+  td {
+    padding: var(--s-3) var(--s-3) var(--s-3) 0;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid rgb(243 236 221 / 0.25);
+  }
+
+  tbody th {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.25rem;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: var(--fs-small);
+  }
+
+  td a {
+    color: var(--on-oxblood);
+  }
+
+  .block {
+    margin-bottom: var(--s-5);
+  }
+
+  h3 {
+    margin-bottom: var(--s-3);
+    font-family: var(--font-mono);
+    color: var(--on-oxblood-muted);
+  }
+
+  .aside-note {
+    font-style: italic;
+    color: var(--on-oxblood-muted);
+  }
+
+  .aside-note a {
+    color: var(--on-oxblood);
+  }
+
+  .band :focus-visible {
+    outline-color: var(--on-oxblood);
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    .side {
+      padding-left: var(--s-6);
+      border-left: 1px solid rgb(243 236 221 / 0.35);
+    }
+  }
+</style>

@@ -1,0 +1,397 @@
+@import './tokens.css';
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  font-kerning: normal;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Faint paper grain; pure CSS so no extra request. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(rgb(28 24 20 / 0.035) 1px, transparent 1px);
+  background-size: 3px 3px;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--oxblood);
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0 0 var(--s-4);
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color var(--dur) var(--ease-out), text-decoration-color var(--dur) var(--ease-out);
+}
+
+a:hover {
+  color: var(--rust);
+}
+
+:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+::selection {
+  background: var(--oxblood);
+  color: var(--on-oxblood);
+}
+
+/* ---------- Layout ---------- */
+.page {
+  width: 100%;
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--s-8);
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: var(--s-8);
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--s-4);
+  top: -100px;
+  z-index: var(--z-skip);
+  padding: var(--s-2) var(--s-4);
+  background: var(--oxblood);
+  color: var(--on-oxblood);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--s-4);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Newspaper furniture ---------- */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.kicker {
+  color: var(--oxblood);
+}
+
+.muted {
+  color: var(--ink-muted);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+.rule-double {
+  border: 0;
+  border-top: 3px double var(--rule);
+  margin: 0;
+}
+
+.rule-heavy {
+  border: 0;
+  border-top: 4px solid var(--rule);
+  margin: 0;
+}
+
+/* ---------- Buttons & chips ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  padding: var(--s-2) var(--s-5);
+  border: 1px solid var(--oxblood);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+.btn svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.btn-primary {
+  background: var(--oxblood);
+  color: var(--on-oxblood);
+}
+
+.btn-primary:hover {
+  background: var(--oxblood-deep);
+  border-color: var(--oxblood-deep);
+  color: var(--on-oxblood);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--oxblood);
+}
+
+.btn-ghost:hover {
+  background: var(--oxblood);
+  color: var(--on-oxblood);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid currentColor;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+/* The redaction / clearance stamp. */
+.stamp {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border: 3px double var(--oxblood);
+  color: var(--oxblood);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  transform: rotate(-2deg);
+}
+
+/* ---------- Long-form prose ---------- */
+.prose {
+  max-width: var(--measure);
+  font-size: var(--fs-body);
+}
+
+.prose h2 {
+  margin: var(--s-7) 0 var(--s-4);
+  font-size: var(--fs-h3);
+}
+
+.prose h3 {
+  margin: var(--s-6) 0 var(--s-3);
+  font-size: 1.5rem;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25em;
+  margin: 0 0 var(--s-4);
+}
+
+.prose li {
+  margin-bottom: var(--s-2);
+}
+
+.prose li::marker {
+  color: var(--oxblood);
+}
+
+.prose strong {
+  font-weight: 700;
+}
+
+.prose a {
+  color: var(--oxblood);
+}
+
+.prose blockquote {
+  margin: var(--s-5) 0;
+  padding-left: var(--s-5);
+  border-left: 3px solid var(--oxblood);
+  font-style: italic;
+  font-size: var(--fs-lede);
+}
+
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0.05em 0.3em;
+  background: var(--paper-inset);
+  border: 1px solid var(--paper-edge);
+  overflow-wrap: anywhere;
+}
+
+.prose pre {
+  margin: var(--s-5) 0;
+  padding: var(--s-4) var(--s-5);
+  overflow-x: auto;
+  background: var(--ink);
+  color: #e9e1cf;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  border-left: 4px solid var(--oxblood);
+}
+
+.prose sup {
+  line-height: 0;
+}
+
+/* Prism tokens in the house palette (classes only, CSP-safe). */
+.token.comment,
+.token.prolog {
+  color: #a3978a;
+  font-style: italic;
+}
+.token.keyword,
+.token.boolean,
+.token.important {
+  color: #e59a8a;
+}
+.token.string,
+.token.attr-value {
+  color: #d9c48f;
+}
+.token.function,
+.token.class-name {
+  color: #f0e6d2;
+  font-weight: 500;
+}
+.token.number,
+.token.operator,
+.token.punctuation {
+  color: #c7b9a6;
+}
+
+/* ---------- Motion ---------- */
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.reveal-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  .reveal-pending {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media print {
+  body::before,
+  .site-nav,
+  .skip-link {
+    display: none;
+  }
+}

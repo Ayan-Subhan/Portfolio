@@ -1,0 +1,261 @@
+---
+// Architecture diagrams as semantic HTML (ordered stages), so they reflow on
+// mobile, stay readable by screen readers and need no inline styles.
+interface Node {
+  title: string;
+  detail?: string;
+  accent?: boolean;
+}
+interface Stage {
+  heading: string;
+  nodes: Node[];
+}
+interface Spec {
+  caption: string;
+  stages: Stage[];
+  note?: string;
+}
+
+interface Props {
+  kind: 'dashboard' | 'aad' | 'eiam' | 'scanner';
+  label?: string;
+}
+const { kind, label = 'Fig.' } = Astro.props;
+
+const specs: Record<Props['kind'], Spec> = {
+  dashboard: {
+    caption: 'Data path, from four vendor consoles to one posture view.',
+    stages: [
+      {
+        heading: 'Sources',
+        nodes: [{ title: 'LogRhythm SIEM' }, { title: 'Qualys VM' }, { title: 'EDR' }, { title: 'PAM' }],
+      },
+      {
+        heading: 'Collect',
+        nodes: [{ title: 'Python API clients', detail: 'token auth · pagination · rate limits · scheduled pulls' }],
+      },
+      {
+        heading: 'Normalise',
+        nodes: [{ title: 'Common schema', detail: 'assets · vulnerabilities · compliance checks · remediation' }],
+      },
+      {
+        heading: 'Store',
+        nodes: [{ title: 'SQLite', detail: 'point-in-time snapshots for trend analysis' }],
+      },
+      {
+        heading: 'Decide',
+        nodes: [{ title: 'KPI thresholds', detail: 'overdue remediation · coverage gaps · compliance drift', accent: true }],
+      },
+      {
+        heading: 'Report',
+        nodes: [{ title: 'Dashboard views', detail: 'criticality · severity · control coverage · remediation progress' }],
+      },
+    ],
+  },
+  aad: {
+    caption: 'AAD+ evaluation path. A flow must pass all three layers in series to reach the protected segment.',
+    note: 'Adaptive attacker: optimises the perturbation against the whole pipeline, within realizability constraints.',
+    stages: [
+      {
+        heading: 'On the wire',
+        nodes: [
+          { title: 'Attacker host', detail: 'crafts the flow — defence-blind or defence-aware' },
+          { title: 'Sensor', detail: 'captures packets, extracts flow features' },
+        ],
+      },
+      { heading: 'Layer 1', nodes: [{ title: 'Rule validator', detail: 'rejects impossible feature combinations' }] },
+      { heading: 'Layer 2', nodes: [{ title: 'Adversarial discriminator', detail: 'random forest over flow features' }] },
+      { heading: 'Layer 3', nodes: [{ title: 'EIDS ensemble', detail: 'MLP · CNN · LSTM, fused' }] },
+      { heading: 'Asset', nodes: [{ title: 'Protected IoMT segment', detail: 'reached only if every layer passes', accent: true }] },
+    ],
+  },
+  eiam: {
+    caption: 'EIAM request path. Decisions are made at the edge; the cloud stays the authoritative registry.',
+    stages: [
+      {
+        heading: 'Device',
+        nodes: [{ title: 'IoT device', detail: 'VID · RID · OP · payload, ephemeral X25519 keypair' }],
+      },
+      {
+        heading: 'Channel',
+        nodes: [{ title: 'AEAD session', detail: 'HKDF-SHA256 (PSK as salt) → ChaCha20-Poly1305, fresh nonce' }],
+      },
+      {
+        heading: 'Edge node',
+        nodes: [
+          { title: 'Decrypt & verify', detail: 'bad tag → drop before policy' },
+          { title: 'LAA engine', detail: 'ABAC · TVR = VR × F ≥ ToC', accent: true },
+          { title: 'Audit log', detail: 'every decision + per-attribute metrics' },
+        ],
+      },
+      {
+        heading: 'Sync',
+        nodes: [{ title: 'MQTT broker', detail: 'request/response RPC with correlation IDs; attribute events' }],
+      },
+      {
+        heading: 'Cloud',
+        nodes: [{ title: 'Cloud IAM (FastAPI)', detail: 'devices · PSKs · authoritative attributes' }],
+      },
+    ],
+  },
+  scanner: {
+    caption: 'Scan pipeline. Each stage streams progress and findings to the dashboard as it runs.',
+    note: 'WebSocket: live progress, status and findings pushed to the browser.',
+    stages: [
+      { heading: 'Stage 1', nodes: [{ title: 'Discovery', detail: 'live hosts on the local segment' }] },
+      { heading: 'Stage 2', nodes: [{ title: 'Port scan', detail: 'exposed services per host' }] },
+      { heading: 'Stage 3', nodes: [{ title: 'Fingerprint', detail: 'device type and vendor' }] },
+      { heading: 'Stage 4', nodes: [{ title: 'Weak credentials', detail: 'default and weak logins', accent: true }] },
+      { heading: 'Report', nodes: [{ title: 'Dashboard', detail: 'topology · vulnerability distribution · per-device report' }] },
+    ],
+  },
+};
+
+const spec = specs[kind];
+---
+
+<figure class="diagram">
+  <ol class="stages">
+    {
+      spec.stages.map((stage) => (
+        <li class="stage">
+          <p class="label heading">{stage.heading}</p>
+          <ul class="nodes">
+            {stage.nodes.map((n) => (
+              <li class:list={['node', { accent: n.accent }]}>
+                <span class="title">{n.title}</span>
+                {n.detail && <span class="detail">{n.detail}</span>}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+  {spec.note && <p class="note label">{spec.note}</p>}
+  <figcaption><span class="label kicker">{label} </span>{spec.caption}</figcaption>
+</figure>
+
+<style>
+  .diagram {
+    container-type: inline-size;
+    margin: 0;
+    padding: var(--s-5);
+    background: var(--paper-inset);
+    border: 1px solid var(--rule);
+  }
+
+  .stages {
+    display: grid;
+    gap: var(--s-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stage {
+    position: relative;
+  }
+
+  /* Down arrows between stages on narrow screens. */
+  .stage + .stage::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--s-6) + 0.35rem);
+    left: 50%;
+    width: 1px;
+    height: calc(var(--s-6) - 0.7rem);
+    background: var(--oxblood);
+  }
+
+  .stage + .stage::after {
+    content: '';
+    position: absolute;
+    top: -0.55rem;
+    left: calc(50% - 4px);
+    border: 4.5px solid transparent;
+    border-top: 6px solid var(--oxblood);
+    border-bottom: 0;
+  }
+
+  .heading {
+    margin: 0 0 var(--s-2);
+    color: var(--oxblood);
+    text-align: center;
+  }
+
+  .nodes {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .node {
+    display: grid;
+    gap: 2px;
+    padding: var(--s-3);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--rule);
+  }
+
+  .node.accent {
+    border-left-color: var(--oxblood);
+    box-shadow: 3px 3px 0 var(--oxblood);
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .detail {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    line-height: 1.45;
+    color: var(--ink-muted);
+  }
+
+  .note {
+    margin: var(--s-5) 0 0;
+    padding: var(--s-2) var(--s-3);
+    border: 1px dashed var(--oxblood);
+    color: var(--oxblood);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  figcaption {
+    margin-top: var(--s-4);
+    font-size: var(--fs-small);
+    color: var(--ink-muted);
+  }
+
+  @container (min-width: 820px) {
+    .stages {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      gap: var(--s-5);
+      align-items: start;
+    }
+
+    .stage + .stage::before {
+      top: calc(1.75rem + 1.2rem);
+      left: calc(-1 * var(--s-5) + 0.2rem);
+      width: calc(var(--s-5) - 0.6rem);
+      height: 1px;
+    }
+
+    .stage + .stage::after {
+      top: calc(1.75rem + 1.2rem - 4px);
+      left: -0.5rem;
+      border: 4.5px solid transparent;
+      border-left: 6px solid var(--oxblood);
+      border-right: 0;
+    }
+  }
+</style>

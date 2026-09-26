@@ -1,0 +1,374 @@
+---
+import { site } from '../data/site';
+import { credentials, byTheNumbers } from '../data/record';
+import Icon from './Icon.astro';
+
+interface Props {
+  exhibits: Array<{ id: string; exhibit: string; short: string }>;
+}
+const { exhibits } = Astro.props;
+---
+
+<section id="front" class="hero page" aria-labelledby="hero-title" data-spy>
+  <div class="filed label">
+    <span>Front page</span>
+    <span class="muted">Filed under: Defensive &amp; offensive security</span>
+  </div>
+  <hr class="rule" />
+
+  <div class="grid">
+    <div class="lead">
+      <p class="label kicker">Case No. 01 — Subject profile</p>
+      <h2 id="hero-title" class="headline">
+        A cyber security professional who builds the tooling <em>— and understands the compliance it feeds.</em>
+      </h2>
+      <p class="deck">
+        BS Cyber Security at FAST-NUCES, Islamabad, and a security intern at JWPL (JazzWorld). I pull vendor data into working
+        dashboards in Python and SQL, and assess vendors and map controls against ISO/IEC 27001 and PTA CTDISR.
+      </p>
+      <div class="body">
+        <p class="dropcap">
+          My work sits where engineering meets assurance. At JWPL I built the compliance KPI dashboard that unified four security stacks
+          into one posture view, and ran SOC 2, vendor-risk and biometric assessments alongside it. My final-year research asks whether
+          layered adversarial-ML defences for IoT intrusion detection survive an attacker who knows they're there. All of it is backed by
+          hands-on offensive and defensive work from coursework and CTFs.
+        </p>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary" href="#work">Read the case files <Icon name="arrow-right" /></a>
+        <a class="btn btn-ghost" href={site.cv} download><Icon name="download" /> Download CV</a>
+      </div>
+    </div>
+
+    <aside class="dossier" aria-label="Subject file">
+      <div class="card">
+        <div class="card-head label">
+          <span>Subject file</span>
+          <span>File No. 2027-CS</span>
+        </div>
+        <div class="monogram" aria-hidden="true">MA</div>
+        <dl>
+          <div><dt class="label">Name</dt><dd>{site.name}</dd></div>
+          <div><dt class="label">Discipline</dt><dd>BS Cyber Security, FAST-NUCES — class of 2027</dd></div>
+          <div><dt class="label">Posting</dt><dd>Cyber Security Intern, JWPL (JazzWorld)</dd></div>
+          <div><dt class="label">Based</dt><dd>{site.location}</dd></div>
+          <div><dt class="label">Specialties</dt><dd>SOC &amp; SIEM · GRC · VAPT · adversarial ML</dd></div>
+        </dl>
+        <p class="label credentials-title">Credentials on file</p>
+        <ul class="creds">
+          {
+            credentials.map((c) => (
+              <li class="stamp">
+                <span class="issuer">{c.issuer}</span> {c.title}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div class="numbers" aria-label="By the numbers">
+    <p class="label kicker">By the numbers</p>
+    <ul>
+      {
+        byTheNumbers.map((n) => (
+          <li>
+            <span class="fig">{n.figure}</span>
+            <span class="lbl">{n.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <nav class="inside" aria-label="Inside this edition">
+    <p class="label kicker">Inside this edition</p>
+    <ol>
+      {
+        exhibits.map((e) => (
+          <li>
+            <a href={`/work/${e.id}`}>
+              <span class="label">Exhibit {e.exhibit}</span>
+              <span class="t">{e.short}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+</section>
+
+<style>
+  .hero {
+    padding-top: var(--s-5);
+    padding-bottom: 0;
+  }
+
+  .filed {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding-bottom: var(--s-2);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-7);
+    padding-top: var(--s-6);
+  }
+
+  .headline {
+    margin: var(--s-3) 0 var(--s-5);
+    font-size: var(--fs-h1);
+    line-height: 1.02;
+    color: var(--ink);
+  }
+
+  .headline em {
+    font-family: var(--font-italic);
+    font-style: italic;
+    color: var(--oxblood);
+    font-size: 0.86em;
+  }
+
+  .deck {
+    max-width: 44ch;
+    margin-bottom: var(--s-5);
+    padding-left: var(--s-4);
+    border-left: 3px solid var(--oxblood);
+    font-size: var(--fs-lede);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .body {
+    max-width: var(--measure);
+  }
+
+  .dropcap::first-letter {
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    font-family: var(--font-display);
+    font-size: 4.1em;
+    line-height: 0.8;
+    color: var(--oxblood);
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+  }
+
+  /* Dossier card */
+  .card {
+    position: relative;
+    padding: var(--s-5);
+    background: var(--paper-inset);
+    border: 1px solid var(--rule);
+    box-shadow: 6px 6px 0 var(--oxblood);
+  }
+
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding-bottom: var(--s-2);
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-muted);
+  }
+
+  .monogram {
+    display: grid;
+    place-items: center;
+    width: 6rem;
+    height: 6rem;
+    margin: var(--s-5) auto;
+    border: 3px double var(--oxblood);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--oxblood);
+  }
+
+  dl {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0 0 var(--s-5);
+  }
+
+  dl > div {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: var(--s-2);
+    padding-bottom: var(--s-2);
+    border-bottom: 1px dotted var(--ink-muted);
+  }
+
+  dt {
+    color: var(--oxblood);
+    padding-top: 0.2em;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+
+  .credentials-title {
+    margin: 0 0 var(--s-3);
+    color: var(--ink-muted);
+  }
+
+  .creds {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .creds .stamp {
+    display: block;
+    background: var(--paper);
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: var(--fs-small);
+  }
+
+  .creds .stamp:nth-child(2) {
+    transform: rotate(1.2deg);
+  }
+
+  .issuer {
+    display: block;
+    font-size: var(--fs-label);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* By the numbers */
+  .numbers {
+    margin-top: var(--s-8);
+    padding-top: var(--s-3);
+    border-top: 4px solid var(--rule);
+  }
+
+  .numbers ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: var(--s-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .numbers li {
+    display: grid;
+    gap: var(--s-1);
+    padding: var(--s-4) var(--s-4) var(--s-4) 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .fig {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 2rem + 3vw, 4.5rem);
+    line-height: 1;
+    color: var(--oxblood);
+    font-variant-numeric: lining-nums;
+  }
+
+  .lbl {
+    font-size: var(--fs-small);
+    line-height: 1.4;
+    max-width: 24ch;
+  }
+
+  /* Inside this edition */
+  .inside {
+    margin-top: var(--s-6);
+    padding: var(--s-4) 0;
+    border-top: 3px double var(--rule);
+    border-bottom: 3px double var(--rule);
+  }
+
+  .inside p {
+    margin: 0 0 var(--s-3);
+  }
+
+  .inside ol {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .inside a {
+    display: grid;
+    gap: 2px;
+    text-decoration: none;
+  }
+
+  .inside .label {
+    color: var(--ink-muted);
+  }
+
+  .inside .t {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .inside a:hover .t {
+    color: var(--oxblood);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  @media (min-width: 768px) {
+    .numbers ul {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .numbers li + li {
+      padding-left: var(--s-4);
+      border-left: 1px solid var(--rule);
+    }
+
+    .numbers li:nth-child(3) {
+      border-left: 1px solid var(--rule);
+    }
+
+    .inside ol {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .inside li + li {
+      padding-left: var(--s-4);
+      border-left: 1px solid var(--rule);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .numbers li:nth-child(even) {
+      padding-left: var(--s-4);
+      border-left: 1px solid var(--rule);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+      gap: var(--s-8);
+    }
+
+    .dossier {
+      padding-left: var(--s-7);
+      border-left: 1px solid var(--rule);
+    }
+  }
+</style>

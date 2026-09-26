@@ -1,0 +1,113 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+
+// The edition date is the build date: it tells readers when the record was last updated.
+const edition = new Date().toLocaleDateString('en-GB', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+const NameTag = compact ? 'p' : 'h1';
+---
+
+<header class:list={['masthead', { compact }]}>
+  <div class="page">
+    <div class="strip label">
+      <span>{site.location}</span>
+      <span class="strip-center">The Security Edition</span>
+      <span>Est. {site.established}</span>
+    </div>
+    <hr class="rule" />
+    <NameTag class="name">
+      <a href="/" aria-label={`${site.name} — front page`}>{site.name}</a>
+    </NameTag>
+    {!compact && <p class="tagline label">{site.tagline}</p>}
+    <hr class="rule-double" />
+    <p class="dateline label">
+      <span>{edition}</span>
+      <span aria-hidden="true">·</span>
+      <span>Vol. I</span>
+      <span aria-hidden="true" class="wide">·</span>
+      <span class="wide">Selected cases &amp; notes</span>
+      <span aria-hidden="true">·</span>
+      <span>Clearance: Public</span>
+    </p>
+    <hr class="rule-double" />
+  </div>
+</header>
+
+<style>
+  .masthead {
+    padding-top: var(--s-4);
+  }
+
+  .strip {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-bottom: var(--s-2);
+    color: var(--ink-muted);
+  }
+
+  .strip-center {
+    display: none;
+  }
+
+  .name {
+    margin: var(--s-4) 0 var(--s-1);
+    padding-bottom: 0.12em;
+    font-size: var(--fs-mast);
+    line-height: 1.05;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: var(--oxblood);
+  }
+
+  .name a {
+    text-decoration: none;
+  }
+
+  .name a:hover {
+    color: var(--oxblood-deep);
+  }
+
+  .tagline {
+    margin: var(--s-2) 0 var(--s-4);
+    text-align: center;
+    letter-spacing: 0.32em;
+    color: var(--ink);
+  }
+
+  .dateline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-1) var(--s-3);
+    margin: 0;
+    padding: var(--s-2) 0;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+
+  .wide {
+    display: none;
+  }
+
+  .compact .name {
+    font-size: clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+    margin: var(--s-3) 0 var(--s-3);
+  }
+
+  @media (min-width: 768px) {
+    .strip-center,
+    .wide {
+      display: inline;
+    }
+  }
+</style>

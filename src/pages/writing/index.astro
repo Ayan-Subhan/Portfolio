@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+
+const posts = (await getCollection('posts'))
+  .filter((p) => import.meta.env.DEV || !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base title="The Lab Report" description="Writeups, explainers and build notes on security engineering, GRC and adversarial ML." compact>
+  <section class="section page" aria-labelledby="archive-title">
+    <SectionHead id="archive" kicker="Archive" meta={`${posts.length} filed`} title="The Lab Report" />
+    {
+      posts.length === 0 ? (
+        <p class="empty">
+          The first reports are being written. Check back soon, or <a href="/#contact">write to the desk</a>.
+        </p>
+      ) : (
+        <ol class="list">
+          {posts.map((p) => (
+            <li>
+              <p class="label kicker">
+                {p.data.kicker}
+                {p.data.draft && ' · Draft'}
+              </p>
+              <h2>
+                <a href={`/writing/${p.id}`}>{p.data.title}</a>
+              </h2>
+              <p>{p.data.summary}</p>
+              <p class="label muted">
+                <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+              </p>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: 50rem;
+  }
+
+  li {
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  h2 {
+    margin: var(--s-2) 0 var(--s-3);
+    font-size: 2rem;
+  }
+
+  h2 a {
+    text-decoration: none;
+  }
+
+  h2 a:hover {
+    text-decoration: underline;
+  }
+
+  .empty {
+    font-style: italic;
+    font-size: var(--fs-lede);
+  }
+
+  .empty a {
+    color: var(--oxblood);
+  }
+</style>
