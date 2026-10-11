@@ -6,7 +6,7 @@ export const site = {
   tagline: 'The field record of a cyber security analyst',
   location: 'Islamabad, Pakistan',
   description:
-    'Cyber Security student at FAST-NUCES building security tooling — compliance dashboards, adversarial-ML defences for IoT intrusion detection and edge IAM — and the GRC work it feeds.',
+    'Cyber Security student at FAST-NUCES building security tooling (compliance dashboards, adversarial-ML defences for IoT intrusion detection and edge IAM) and the GRC work it feeds.',
   email: 'ayansubhan25@gmail.com',
   // TODO: add profile URLs, e.g. https://www.linkedin.com/in/<handle>
   linkedin: '',

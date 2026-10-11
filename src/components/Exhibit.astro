@@ -17,9 +17,9 @@ const href = `/work/${project.id}`;
   <div class="media">
     {
       p.cover ? (
-        <Figure src={p.cover} alt={p.coverAlt ?? ''} caption={p.coverCaption} label={`Fig. ${p.exhibit}1 —`} redacted={p.redacted} />
+        <Figure src={p.cover} alt={p.coverAlt ?? ''} caption={p.coverCaption} label={`Fig. ${p.exhibit}1.`} redacted={p.redacted} />
       ) : (
-        <Diagram kind={p.diagram} label={`Fig. ${p.exhibit}1 —`} />
+        <Diagram kind={p.diagram} label={`Fig. ${p.exhibit}1.`} />
       )
     }
   </div>

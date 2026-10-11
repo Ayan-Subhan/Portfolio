@@ -1,4 +1,4 @@
-# Muhammad Ayan — The Field Record
+# Muhammad Ayan: The Field Record
 
 A static portfolio site built with Astro. It is designed as an editorial newspaper: bone paper, oxblood ink and Caslon/Times type. It ships with a strict CSP and no third-party requests.
 
@@ -18,14 +18,13 @@ A static portfolio site built with Astro. It is designed as an editorial newspap
 - `src/content/projects/*.md`: one case file per project. Frontmatter drives the home-page exhibit card; the body is the detail page.
 - `src/content/posts/*.md`: Lab Report posts. Set `draft: false` to publish. Copy `_ctf-writeup-template.md` to start a writeup.
 - `public/_headers`: security headers for Cloudflare Pages / Netlify.
-- `public/.well-known/security.txt`: disclosure contact. Renew `Expires` every year.
 
 ## Before going live (TODO)
 
 - [ ] Add `linkedin` and `github` URLs in `src/data/site.ts`. Both are hidden until set.
 - [ ] Add a `repo:` URL to each project that has a public repo, and pin those repos on GitHub.
-- [ ] Set the real domain in `astro.config.mjs` (`site`) and in `security.txt`.
-- [ ] Fill in CTF placements, categories and strongest categories in `src/data/record.ts`.
+- [ ] Set the real domain in `astro.config.mjs` (`site`).
+- [ ] Fill in strongest CTF categories in `src/data/record.ts`.
 - [ ] Add the year for EIAM and the IoT scanner, plus a screenshot for the scanner.
 - [ ] Review the draft posts and publish them.
 - [ ] Replace `public/cv/Muhammad_Ayan_CV.pdf` with a public version that leaves out your phone number.

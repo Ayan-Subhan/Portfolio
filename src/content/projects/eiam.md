@@ -1,6 +1,6 @@
 ---
 title: Edge-Enabled Identity & Access Management for IoT
-short: EIAM — Edge IAM for IoT
+short: 'EIAM: Edge IAM for IoT'
 exhibit: C
 org: Network Security project · FAST-NUCES
 year: '' # TODO: add the year
@@ -11,14 +11,14 @@ role: >-
   One of three engineers. We implemented the Q1-2025 EIAM-IoT framework end to end: a local authentication and authorization engine at the edge, an authenticated-encryption channel from device to edge, and MQTT context sync with the cloud.
 stack: [Python, FastAPI, SQLite, MQTT · Mosquitto, X25519, HKDF-SHA256, ChaCha20-Poly1305, React]
 findings:
-  - Device-to-edge traffic protected with ephemeral X25519, HKDF (PSK as salt) and ChaCha20-Poly1305 — ciphertext only on the wire, verified in Wireshark.
+  - Device-to-edge traffic protected with ephemeral X25519, HKDF (PSK as salt) and ChaCha20-Poly1305, so only ciphertext is on the wire, verified in Wireshark.
   - ABAC decisions made locally at the edge, with each attribute scored on freshness and trust (TVR = VR × F ≥ ToC).
   - Every ALLOW or DENY persisted with per-attribute metrics, giving a full audit trail.
   - Edge–cloud context sync over MQTT request/response, pulling only attributes newer than the edge's copy.
 diagram: eiam
 cover: ../../assets/work/eiam-admin-console.webp
 coverAlt: EIAM admin console showing a live request moving from IoT device through edge crypto, LAA engine and cloud IAM, with a per-attribute table of VR, freshness, TVR and threshold values and the final decision.
-coverCaption: EIAM admin console — one request traced from device to decision, with the per-attribute trust calculation.
+coverCaption: EIAM admin console: one request traced from device to decision, with the per-attribute trust calculation.
 gallery:
   - src: ../../assets/work/eiam-edge-decision.webp
     alt: Terminal output of the edge node. It completes a handshake with device VID-HM-001, decrypts a WRITE request for patient_icu_record containing vitals, and returns an LAA decision of DENY.

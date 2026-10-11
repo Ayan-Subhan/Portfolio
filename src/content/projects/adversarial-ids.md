@@ -3,10 +3,10 @@ title: Adversarial ML for IoT Intrusion Detection
 short: Adversarial ML for IDS
 exhibit: B
 org: Final Year Project · FAST-NUCES
-year: '2026 — 2027'
+year: '2026 to 2027'
 order: 2
 problem: >-
-  Layered adversarial-example detectors for IoT intrusion detection report near-perfect results — but they are trained and tested on the same attacks, evaluated only against defence-blind attackers, and validated on enterprise traffic rather than IoT. Nobody knows whether they hold up when it counts.
+  Layered adversarial-example detectors for IoT intrusion detection report near-perfect results, but they are trained and tested on the same attacks, evaluated only against defence-blind attackers, and validated on enterprise traffic rather than IoT. Nobody knows whether they hold up when it counts.
 role: >-
   Co-researcher on my final-year project: literature review and gap analysis, threat model, and the AAD+ evaluation bench and flow explorer used to put the defence under pressure.
 stack: [Python, Random Forest, MLP · CNN · LSTM, PGD · BIM · FGSM · DeepFool, CIC-IoMT-2024, CSE-CIC-IDS2018]
@@ -17,8 +17,8 @@ findings:
   - Measured results will be published here when the evaluation is complete.
 diagram: aad
 cover: ../../assets/work/aad-flow-explorer.webp
-coverAlt: The AAD+ Flow Explorer. Controls choose the traffic type, what the attacker knows and the EIDS fusion rule, above a pipeline of boxes from attacker host through wire and sensor into three defence layers — rule validator, adversarial discriminator and EIDS ensemble — ending at a protected hospital ward segment.
-coverCaption: AAD+ Flow Explorer — send one flow at a time through the defence and see which layer stops it, and why.
+coverAlt: The AAD+ Flow Explorer. Controls choose the traffic type, what the attacker knows and the EIDS fusion rule, above a pipeline of boxes from attacker host through wire and sensor into three defence layers (rule validator, adversarial discriminator and EIDS ensemble), ending at a protected hospital ward segment.
+coverCaption: AAD+ Flow Explorer. Send one flow at a time through the defence and see which layer stops it, and why.
 status: Research in progress
 ---
 

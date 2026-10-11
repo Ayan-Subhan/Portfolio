@@ -19,7 +19,7 @@ interface Props {
 }
 
 const { title, description = site.description, compact = false } = Astro.props;
-const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — Cyber Security`;
+const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | Cyber Security`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -32,7 +32,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#ece4d3" />
+    <meta name="theme-color" content="#f4f1ea" />
     <meta name="color-scheme" content="light" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta property="og:type" content="website" />

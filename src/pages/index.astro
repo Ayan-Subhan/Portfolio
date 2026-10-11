@@ -21,7 +21,7 @@ const forthcoming = posts.filter((p) => p.data.draft);
   <Hero exhibits={projects.map((p) => ({ id: p.id, exhibit: p.data.exhibit, short: p.data.short }))} />
 
   <section id="work" class="section page" aria-labelledby="work-title">
-    <SectionHead id="work" kicker="Section I — Case files" meta={`${projects.length} exhibits entered into the record`} title="Selected Cases" />
+    <SectionHead id="work" kicker="Section I: Case files" meta={`${projects.length} exhibits entered into the record`} title="Selected Cases" />
     {projects.map((project, i) => <Exhibit project={project} flip={i % 2 === 1} />)}
   </section>
 

@@ -10,7 +10,7 @@ export const toolkit = [
   {
     heading: 'SIEM & SOC',
     note: 'Detection, triage and the data plumbing behind it.',
-    items: ['LogRhythm (API integration)', 'Splunk — SPL', 'IBM QRadar', 'Wazuh', 'Elastic Stack', 'Snort'],
+    items: ['LogRhythm (API integration)', 'Splunk SPL', 'IBM QRadar', 'Wazuh', 'Elastic Stack', 'Snort'],
   },
   {
     heading: 'VAPT',
@@ -34,7 +34,7 @@ export const toolkit = [
       'ISO/IEC 27001:2022',
       'SOC 2 gap analysis',
       'PTA CTDISR (all 14 chapters)',
-      'Vendor risk management — Bitsight',
+      'Vendor risk management (Bitsight)',
       'ISO/IEC 30107-3 (PAD testing)',
       'FIDO2 / WebAuthn',
       'ISO/IEC 24745',
@@ -47,13 +47,7 @@ export const toolkit = [
   },
 ];
 
-// TODO: fill in `placement`, `categories` and `writeup` (a /writing/<slug> path) per event.
-export const ctfs: Array<{ event: string; year: string; placement: string; categories: string[]; writeup: string }> = [
-  { event: 'Ignite Hackathon CTF', year: '2024', placement: '', categories: [], writeup: '' },
-  { event: 'CTS CTF', year: '2024', placement: '', categories: [], writeup: '' },
-  { event: 'C00k3d CTF', year: '', placement: '', categories: [], writeup: '' },
-  { event: 'MCS CTF', year: '', placement: '', categories: [], writeup: '' },
-];
+export const ctfs = ['Ignite Hackathon CTF', 'CTS CTF', 'C00k3d CTF', 'MCS CTF'];
 
 // TODO: list the categories you are strongest in (e.g. Forensics, Web, Crypto).
 export const strongCategories: string[] = [];
@@ -71,7 +65,7 @@ export const trainingRooms = [
 
 export const ledger = [
   {
-    dates: 'Jul 2026 — Aug 2026',
+    dates: 'Jul 2026 to Aug 2026',
     role: 'Cyber Security Intern',
     org: 'JWPL (JazzWorld)',
     summary:
@@ -97,7 +91,7 @@ export const ledger = [
     ],
   },
   {
-    dates: '2023 — 2027',
+    dates: '2023 to 2027',
     role: 'BS Cyber Security',
     org: 'FAST-NUCES, Islamabad',
     summary: 'Network Security, Ethical Hacking, Cryptography and Information Security Management.',
@@ -108,7 +102,7 @@ export const ledger = [
 export const byTheNumbers = [
   { figure: '4', label: 'security stacks unified into one posture view at JWPL' },
   { figure: '14', label: 'CTDISR regulatory chapters mapped into a supplier questionnaire' },
-  { figure: '3', label: 'vendor assessments run — SOC 2, Bitsight VRM, biometric PAD' },
+  { figure: '3', label: 'vendor assessments run: SOC 2, Bitsight VRM, biometric PAD' },
   { figure: '4', label: 'CTF competitions entered' },
 ];
 

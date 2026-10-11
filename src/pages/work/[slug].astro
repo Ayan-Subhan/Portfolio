@@ -47,7 +47,7 @@ const { Content } = await render(project);
 
     {p.cover && (
       <div class="lead-fig">
-        <Figure src={p.cover} alt={p.coverAlt ?? ''} caption={p.coverCaption} label={`Fig. ${p.exhibit}1 —`} redacted={p.redacted} eager sizes="(min-width: 1200px) 1200px, 100vw" />
+        <Figure src={p.cover} alt={p.coverAlt ?? ''} caption={p.coverCaption} label={`Fig. ${p.exhibit}1.`} redacted={p.redacted} eager sizes="(min-width: 1200px) 1200px, 100vw" />
       </div>
     )}
 
@@ -70,7 +70,7 @@ const { Content } = await render(project);
 
     <section class="arch" aria-labelledby="arch-title">
       <h2 id="arch-title">Architecture</h2>
-      <Diagram kind={p.diagram} label={`Fig. ${p.exhibit}${p.cover ? 2 : 1} —`} />
+      <Diagram kind={p.diagram} label={`Fig. ${p.exhibit}${p.cover ? 2 : 1}.`} />
     </section>
 
     {
@@ -79,7 +79,7 @@ const { Content } = await render(project);
           <h2 id="evidence-title">Evidence locker</h2>
           <div class="grid">
             {p.gallery.map((g, i) => (
-              <Figure src={g.src} alt={g.alt} caption={g.caption} label={`Fig. ${p.exhibit}${i + 3} —`} redacted={p.redacted} sizes="(min-width: 1024px) 600px, 100vw" />
+              <Figure src={g.src} alt={g.alt} caption={g.caption} label={`Fig. ${p.exhibit}${i + 3}.`} redacted={p.redacted} sizes="(min-width: 1024px) 600px, 100vw" />
             ))}
           </div>
         </section>

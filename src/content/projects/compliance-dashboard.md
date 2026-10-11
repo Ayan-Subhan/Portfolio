@@ -6,7 +6,7 @@ org: JWPL (JazzWorld)
 year: '2026'
 order: 1
 problem: >-
-  Security posture lived in four separate consoles — the SIEM, Qualys, EDR and PAM — and was stitched together by hand in spreadsheets for every management report. Nobody could say, on demand, which assets were compliant, which were drifting, or where remediation was overdue.
+  Security posture lived in four separate consoles (the SIEM, Qualys, EDR and PAM) and was stitched together by hand in spreadsheets for every management report. Nobody could say, on demand, which assets were compliant, which were drifting, or where remediation was overdue.
 role: >-
   Sole designer and builder, and the primary deliverable of my internship: from the vendor API clients and data model to the KPI logic and dashboard views.
 stack: [Python, REST APIs, SQLite, LogRhythm SIEM, Qualys VM, EDR, PAM, JavaScript]
@@ -18,7 +18,7 @@ findings:
 diagram: dashboard
 cover: ../../assets/work/jwpl-compliance.webp
 coverAlt: Asset Compliance view of the dashboard showing KPI cards, a control-coverage bar chart per source, a compliance-posture donut and a control-depth histogram. All values are redacted with black bars.
-coverCaption: Asset Compliance view — every asset any source knows about, checked against each control.
+coverCaption: Asset Compliance view: every asset any source knows about, checked against each control.
 redacted: true
 gallery:
   - src: ../../assets/work/jwpl-teams.webp
