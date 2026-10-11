@@ -18,7 +18,7 @@ findings:
 diagram: dashboard
 cover: ../../assets/work/jwpl-compliance.webp
 coverAlt: Asset Compliance view of the dashboard showing KPI cards, a control-coverage bar chart per source, a compliance-posture donut and a control-depth histogram. All values are redacted with black bars.
-coverCaption: Asset Compliance view: every asset any source knows about, checked against each control.
+coverCaption: Asset Compliance view. Every asset any source knows about, checked against each control.
 redacted: true
 gallery:
   - src: ../../assets/work/jwpl-teams.webp

@@ -18,7 +18,7 @@ findings:
 diagram: eiam
 cover: ../../assets/work/eiam-admin-console.webp
 coverAlt: EIAM admin console showing a live request moving from IoT device through edge crypto, LAA engine and cloud IAM, with a per-attribute table of VR, freshness, TVR and threshold values and the final decision.
-coverCaption: EIAM admin console: one request traced from device to decision, with the per-attribute trust calculation.
+coverCaption: EIAM admin console. One request traced from device to decision, with the per-attribute trust calculation.
 gallery:
   - src: ../../assets/work/eiam-edge-decision.webp
     alt: Terminal output of the edge node. It completes a handshake with device VID-HM-001, decrypts a WRITE request for patient_icu_record containing vitals, and returns an LAA decision of DENY.
